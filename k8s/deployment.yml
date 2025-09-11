@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatgpt-nodejs-app
+  labels:
+    name: chatgpt-nodejs-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: chatgpt-nodejs-app
+  template:
+    metadata:
+      labels:
+        name: chatgpt-nodejs-app
+    spec:
+      containers:
+        - image: waqasiqbal1/chatgpt-nodejs-app
+          name: chatgpt-nodejs-app
+          ports:
+            - containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 15
+            timeoutSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            timeoutSeconds: 10
