@@ -20,11 +20,11 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        working-directory: ./chatgpt-nodejs-app/app
+        working-directory: ./app
         run: npm install
 
       - name: Run unit tests and coverage
-        working-directory: ./chatgpt-nodejs-app/app
+        working-directory: ./app
         run: npm test
       
       - name: Sonar Scan
@@ -59,4 +59,8 @@ jobs:
         run: |
           docker build -t chatgpt-nodejs-app:latest ./chatgpt-nodejs-app/app
           docker tag chatgpt-nodejs-app:latest ${{ secrets.DOCKER_USERNAME }}/chatgpt-nodejs-app:latest
-      
+
+      - name: Push Image to DockerHub
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/chatgpt-nodejs-app:latest
+    
