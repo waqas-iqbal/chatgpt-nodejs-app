@@ -37,7 +37,7 @@ jobs:
           args: >
             -Dsonar.projectKey=chatgpt-nodejs-app
             -Dsonar.organization=lfx
-            -Dsonar.host.url=http://54.159.48.84:9000
+            -Dsonar.host.url=http://98.88.79.38:9000
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Auto created by GitHub
