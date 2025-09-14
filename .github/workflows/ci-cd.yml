@@ -94,7 +94,7 @@ jobs:
         run: |
           docker run -d -p 3000:3000 --name chatgpt-nodejs-app-test ${{ env.dockerhub_repo }}:latest
           for i in {1..20}; do
-            if curl -fsS http://13.218.90.229:3000/health; then echo "OK"; exit 0; fi
+            if curl -fsS http://98.88.79.38:3000/health; then echo "OK"; exit 0; fi
             sleep 1
           done
           echo "Smoke test failed" && docker logs smoketest && exit 1          
