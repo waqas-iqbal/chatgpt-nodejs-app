@@ -61,7 +61,7 @@ jobs:
 
       - name: Build Image
         run: |
-          docker build -t chatgpt-nodejs-app:latest ./chatgpt-nodejs-app/app
+          docker build -t chatgpt-nodejs-app:latest -f docker/Dockerfile .
           docker tag chatgpt-nodejs-app:latest ${{ secrets.DOCKER_USERNAME }}/chatgpt-nodejs-app:latest
 
       - name: Scan Filesystem with Trivy
