@@ -92,7 +92,7 @@ jobs:
 
       - name: Smoke Test container
         run: |
-          docker run -d -p 3000:3000 --name chatgpt-nodejs-app-test ${{ env.dockerhub_repo }}:latest
+          docker run -dt -p 3000:3000 --name chatgpt-nodejs-app-test ${{ env.dockerhub_repo }}:latest
           for i in {1..20}; do
             if curl -fsS http://98.88.79.38:3000/health; then echo "OK"; exit 0; fi
             sleep 1
@@ -105,3 +105,37 @@ jobs:
       - name: Push Image to DockerHub
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/chatgpt-nodejs-app:latest
+  
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-scan-and-push
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Update kubeconfig for EKS
+        run: aws eks update-kubeconfig --name my-eks-cluster --region us-east-1
+
+      - name: Test K8s access
+        run: kubectl get nodes
+
+      - name: Deploy Application to EKS
+        run: kubectl apply -f k8s/deployment.yml
+
+      - name: Verify Pods
+        run: kubectl get pods
+
+      - name: Deploy Service
+        run: kubectl apply -f k8s/service.yml
+
+      - name: Verify Service
+        run: kubectl get svc
