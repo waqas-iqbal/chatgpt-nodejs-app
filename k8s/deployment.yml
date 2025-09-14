@@ -3,20 +3,20 @@ kind: Deployment
 metadata:
   name: chatgpt-nodejs-app
   labels:
-    name: chatgpt-nodejs-app
+    app: chatgpt-nodejs-app
 spec:
   replicas: 2
   selector:
     matchLabels:
-      name: chatgpt-nodejs-app
+      app: chatgpt-nodejs-app
   template:
     metadata:
       labels:
-        name: chatgpt-nodejs-app
+        app: chatgpt-nodejs-app
     spec:
       containers:
-        - image: waqasiqbal1/chatgpt-nodejs-app
-          name: chatgpt-nodejs-app
+        - name: chatgpt-nodejs-app
+          image: waqasiqbal1/chatgpt-nodejs-app:latest
           ports:
             - containerPort: 3000
           livenessProbe:
