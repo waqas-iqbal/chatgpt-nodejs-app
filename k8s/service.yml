@@ -1,11 +1,12 @@
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
-  name:  chatgpt-nodejs-app-svc
+  name: chatgpt-nodejs-app-svc
 spec:
   selector:
-    app:  chatgpt-nodejs-app
-  type:  LoadBalancer
+    app: chatgpt-nodejs-app
+  type: LoadBalancer
+  ports:
     - name: http
-      port:  80
-      targetPort:  3000
+      port: 80
+      targetPort: 3000
